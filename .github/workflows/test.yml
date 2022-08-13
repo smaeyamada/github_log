@@ -1,0 +1,29 @@
+name: workflow for log
+on:
+  workflow_dispatch:
+    inputs:
+      str:
+        description: 'Sample string'
+        required: false
+        default: 'test string'
+        type: string
+jobs:
+  pre_process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pre 1st
+        run: |
+          echo "[debug] pre 1st"
+          echo "[debug] ${{ github.event.inputs.str }}"
+
+  test_ci:
+    runs-on: ubuntu-latest
+    needs: pre_process
+    strategy:
+      matrix:
+        mx: ['m1', 'm2']
+    steps:
+      - name: show parameter
+        run: |
+          echo "[debug] mx: ${{ matrix.mx }}"
+          echo "[debug] run_id: ${{ github.run_id }}"
